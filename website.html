@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Figure Gallery</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+
+        .container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            max-width: 1200px;
+            width: 100%;
+            padding: 40px;
+            position: relative;
+        }
+
+        .figure-content {
+            text-align: center;
+        }
+
+        .figure-number {
+            color: #667eea;
+            font-size: 1.2em;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .figure-image {
+            width: 100%;
+            height: auto;
+            margin: 20px 0;
+            border-radius: 10px;
+            background: #f5f5f5;
+            padding: 10px;
+        }
+
+        .figure-text {
+            color: #333;
+            font-size: 1.1em;
+            line-height: 1.6;
+            margin-top: 20px;
+        }
+
+        .navigation {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 2px solid #f0f0f0;
+        }
+
+        .nav-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            font-size: 1em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-button:hover:not(:disabled) {
+            background: #5568d3;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.4);
+        }
+
+        .nav-button:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+            opacity: 0.5;
+        }
+
+        .page-indicator {
+            color: #666;
+            font-weight: 600;
+        }
+
+        .arrow {
+            font-size: 1.2em;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="figure-content">
+            <div class="figure-number" id="figureNumber">Figure 1</div>
+            <img src="" alt="Figure" class="figure-image" id="figureImage">
+            <div class="figure-text" id="figureText">
+                This is the description for Figure 1. Replace this text with your own description for each figure.
+            </div>
+        </div>
+        
+        <div class="navigation">
+            <button class="nav-button" id="prevBtn" onclick="previousFigure()">
+                <span class="arrow">←</span> Previous
+            </button>
+            <div class="page-indicator" id="pageIndicator">1 / 10</div>
+            <button class="nav-button" id="nextBtn" onclick="nextFigure()">
+                Next <span class="arrow">→</span>
+            </button>
+        </div>
+    </div>
+
+    <script>
+        let currentIndex = 0;
+
+        const figures = [
+            {
+                image: "bar_graphs/0.png",
+                text: "Question 1: True or False, Canada has a higher average height than the USA?<br>Question 2: Which figure makes the statement <b> France has the second largest average height </b> most obvious?"
+            },
+            {
+                image: "bar_graphs/1.png",
+                text: "Question 1: True or False, laptops have more monthly sales than monitors?<br>Question 2: Which figure makes the statement <b> Keyboards have the lowest monthly sales </b> most obvious?"
+            },
+            {
+                image: "bar_graphs/2.png",
+                text: "Question 1: True or False, the 10-19 age group has more than 6 hours of screen time?<br>Question 2: Which figure makes the statement <b> The 20-29 age group has the highest average screen time </b> most obvious?"
+            },
+            {
+                image: "bar_graphs/3.png",
+                text: "Question 1: True or False, Music has a higher test score than Art?<br>Question 2: Which figure makes the statement <b> Science has the second lowest test score </b> most obvious?"
+            },
+            {
+                image: "bar_graphs/4.png",
+                text: "Question 1: True or False, the average temperature of London is over 14?<br>Question 2: Which figure makes the statement <b> Sydney has the highest average temperature </b> most obvious?"
+            },
+            {
+                image: "bar_graphs/5.png",
+                text: "Question 1: True or False, Brazil is more populous than USA?<br>Question 2: Which figure makes the statement <b> USA has the third highest population </b> most obvious?"
+            },
+            {
+                image: "bar_graphs/6.png",
+                text: "Question 1: True or False, the 70-79 age group exercises more than 2.5 hours a week?<br>Question 2: Which figure makes the statement <b> The 70-79 age group has the second lowest average exercise time </b> most obvious?"
+            },
+            {
+                image: "bar_graphs/7.png",
+                text: "Question 1: True or False, the average internet speed in Japan is higher than the USA?<br>Question 2: Which figures makes the statement <b> South Korea has the highest average internet speed </b> most obvious?"
+            },
+            {
+                image: "bar_graphs/8.png",
+                text: "Question 1: True or False, Germany's unemployment rate is higher than Japan's?<br>Question 2: Which figure makes the statement <b> Spain has the highest unemployment rate </b> most obvious?"
+            },
+            {
+                image: "bar_graphs/9.png",
+                text: "Question 1: True or False, engineers make more on average than accountants?<br>Question 2: Which figure makes the statement <b> Artists have the lowest average salary </b> most obvious?"
+            }
+        ];
+
+        function updateDisplay() {
+            const figure = figures[currentIndex];
+            document.getElementById('figureNumber').textContent = `Figure ${currentIndex + 1}`;
+            document.getElementById('figureImage').src = figure.image;
+            document.getElementById('figureText').innerHTML = figure.text;
+            document.getElementById('pageIndicator').textContent = `${currentIndex + 1} / ${figures.length}`;
+            
+            document.getElementById('prevBtn').disabled = currentIndex === 0;
+            document.getElementById('nextBtn').disabled = currentIndex === figures.length - 1;
+        }
+
+        function nextFigure() {
+            if (currentIndex < figures.length - 1) {
+                currentIndex++;
+                updateDisplay();
+            }
+        }
+
+        function previousFigure() {
+            if (currentIndex > 0) {
+                currentIndex--;
+                updateDisplay();
+            }
+        }
+
+        updateDisplay();
+    </script>
+</body>
+</html>
