@@ -31,6 +31,49 @@
             position: relative;
         }
 
+        /* Homepage Styles */
+        .homepage {
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 400px;
+        }
+
+        .homepage h1 {
+            font-size: 3em;
+            color: #667eea;
+            margin-bottom: 30px;
+        }
+
+        .homepage p {
+            font-size: 1.3em;
+            color: #666;
+            margin-bottom: 50px;
+            line-height: 1.6;
+            max-width: 600px;
+        }
+
+        .start-button {
+            background: #667eea;
+            color: white;
+            border: none;
+            padding: 16px 48px;
+            font-size: 1.2em;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+        }
+
+        .start-button:hover {
+            background: #5568d3;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.5);
+        }
+
+        /* Figure Gallery Styles */
         .figure-content {
             text-align: center;
         }
@@ -101,26 +144,65 @@
         .arrow {
             font-size: 1.2em;
         }
+
+        .home-button {
+            background: #764ba2;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            font-size: 0.9em;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            position: absolute;
+            top: 20px;
+            left: 20px;
+        }
+
+        .home-button:hover {
+            background: #5d3a82;
+            transform: translateY(-2px);
+        }
+
+        .hidden {
+            display: none;
+        }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="figure-content">
+        <button class="home-button hidden" id="homeBtn" onclick="showHomepage()">← Insturctions</button>
+        
+        <!-- Homepage -->
+        <div class="homepage" id="homepage">
+            <h1>Thank you for Participating in our Survey!</h1>
+            <h2>Here are the instructions<br></h2>
+            <p><br>You will be shown 10 figures. Each figure will contain 4 bar charts depicting the exact same information.</p>
+            <p>Each figure will also contain two questions. For each figure, place the answer to question 1 and question 2 in the corresponding section of the response sheet.</p>
+            <p>You may navigate back and forth throughout the survey if you wish. The instruction button on the top left will bring you back to this page.</p>
+            <p>Please save the filled out response sheet and email it to me when completed.</p>
+            
+            <button class="start-button" onclick="startGallery()">Begin!</button>
+            
+        </div>
+
+        <!-- Figure Gallery -->
+        <div class="figure-content hidden" id="gallery">
             <div class="figure-number" id="figureNumber">Figure 1</div>
             <img src="" alt="Figure" class="figure-image" id="figureImage">
             <div class="figure-text" id="figureText">
                 This is the description for Figure 1. Replace this text with your own description for each figure.
             </div>
-        </div>
         
-        <div class="navigation">
-            <button class="nav-button" id="prevBtn" onclick="previousFigure()">
-                <span class="arrow">←</span> Previous
-            </button>
-            <div class="page-indicator" id="pageIndicator">1 / 10</div>
-            <button class="nav-button" id="nextBtn" onclick="nextFigure()">
-                Next <span class="arrow">→</span>
-            </button>
+            <div class="navigation">
+                <button class="nav-button" id="prevBtn" onclick="previousFigure()">
+                    <span class="arrow">←</span> Previous
+                </button>
+                <div class="page-indicator" id="pageIndicator">1 / 10</div>
+                <button class="nav-button" id="nextBtn" onclick="nextFigure()">
+                    Next <span class="arrow">→</span>
+                </button>
+            </div>
         </div>
     </div>
 
@@ -170,6 +252,20 @@
             }
         ];
 
+        function startGallery() {
+            document.getElementById('homepage').classList.add('hidden');
+            document.getElementById('gallery').classList.remove('hidden');
+            document.getElementById('homeBtn').classList.remove('hidden');
+            currentIndex = 0;
+            updateDisplay();
+        }
+
+        function showHomepage() {
+            document.getElementById('homepage').classList.remove('hidden');
+            document.getElementById('gallery').classList.add('hidden');
+            document.getElementById('homeBtn').classList.add('hidden');
+        }
+
         function updateDisplay() {
             const figure = figures[currentIndex];
             document.getElementById('figureNumber').textContent = `Figure ${currentIndex + 1}`;
@@ -194,8 +290,6 @@
                 updateDisplay();
             }
         }
-
-        updateDisplay();
     </script>
 </body>
 </html>
